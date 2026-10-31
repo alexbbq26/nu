@@ -40,6 +40,7 @@ body{margin:0;min-height:100vh;font-family:Arial,Helvetica,sans-serif;color:var(
 <div class="field full copy" role="button" tabindex="0" data-copy="clabe" data-msg="CLABE copiada."><span class="label">CLABE interbancaria</span><div class="value clabe-value" id="clabe">638180000174308182</div></div>
 <div class="field"><span class="label">Número de cuenta</span><div class="value" id="cuenta">00017430818</div></div>
 <div class="field"><span class="label">Entidad</span><div class="value" id="entidad">NU MEXICO</div></div>
+<div class="field full copy" role="button" tabindex="0" data-copy="concepto" data-msg="Concepto copiado."><span class="label">Concepto</span><div class="value" id="concepto">Nombre del cliente</div></div>
 </div>
 <div class="actions"><button class="primary" onclick="copyText(data.clabe,'CLABE copiada.')">Copiar CLABE</button><button class="primary" onclick="copyText(data.titular,'Titular copiado.')">Copiar titular</button><button class="secondary" onclick="copyAll()">Copiar todos los datos</button><button class="secondary" onclick="shareData()">Compartir datos</button></div>
 <div class="card-wrap"><div class="card" aria-label="Tarjeta digital de datos de cuenta Nu">
@@ -57,10 +58,10 @@ body{margin:0;min-height:100vh;font-family:Arial,Helvetica,sans-serif;color:var(
 </main><div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script>
 document.getElementById('cardLogo').src=document.querySelector('.logo').src;
-const data={titular:"MANUEL ALEJANDRO MADRID CHAVEZ",clabe:"638180000174308182",cuenta:"00017430818",entidad:"NU MEXICO"};
+const data={titular:"MANUEL ALEJANDRO MADRID CHAVEZ",clabe:"638180000174308182",cuenta:"00017430818",entidad:"NU MEXICO",concepto:"Nombre del cliente"};
 function showToast(message){const toast=document.getElementById('toast');toast.textContent=message;toast.classList.add('show');clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>toast.classList.remove('show'),2200)}
 async function copyText(text,message){try{await navigator.clipboard.writeText(text);showToast(message)}catch{const area=document.createElement('textarea');area.value=text;document.body.appendChild(area);area.select();document.execCommand('copy');area.remove();showToast(message)}}
-function allData(){return `Titular: ${data.titular}\nCLABE: ${data.clabe}\nNúmero de cuenta: ${data.cuenta}\nEntidad: ${data.entidad}`}
+function allData(){return `Titular: ${data.titular}\nCLABE: ${data.clabe}\nNúmero de cuenta: ${data.cuenta}\nEntidad: ${data.entidad}\nConcepto: ${data.concepto}`}
 document.querySelectorAll('.copy').forEach(el=>{const go=()=>copyText(data[el.dataset.copy],el.dataset.msg);el.addEventListener('click',go);el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}})});
 function copyAll(){copyText(allData(),'Datos copiados.')}
 async function shareData(){const text=`Datos para recibir dinero\n\n${allData()}`;if(navigator.share){try{await navigator.share({title:'Datos de cuenta Nu',text})}catch{}}else{copyText(text,'Datos copiados para compartir.')}}
